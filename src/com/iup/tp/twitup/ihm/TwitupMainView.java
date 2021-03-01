@@ -3,16 +3,14 @@ package com.iup.tp.twitup.ihm;
 import java.awt.Dimension;
 import java.awt.GridBagLayout;
 import java.awt.Toolkit;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 import javax.swing.ImageIcon;
-import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
+import javax.swing.WindowConstants;
 
 /**
  * Classe de la vue principale de l'application.
@@ -28,15 +26,9 @@ public class TwitupMainView extends JFrame
    */
   protected JPanel contentPane;
 
-  /**
-   * JDialog actuellement affiché.
-   */
-  protected JDialog jDialog;
-
   public TwitupMainView(TwitupController twitupController)
   {
     this.twitupController = twitupController;
-
     this.initGui();
   }
 
@@ -52,10 +44,12 @@ public class TwitupMainView extends JFrame
   {
     Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 
-    // Initialisation paramètres graphiques fenêtre.
-    // TODO : Set logo
-    this.setTitle("TwitUp"); // TODO : Texte dans fichier config
+    // Initialisation paramètres fenêtre.
+    ImageIcon icon = new ImageIcon(getClass().getClassLoader().getResource("logoIUP_50.jpg")); // FIXME : Image brut
+    this.setIconImage(icon.getImage());
+    this.setTitle("TwitUp"); // FIXME : Texte brut
     this.setLocation((screenSize.width - this.getWidth()) / 6, (screenSize.height - this.getHeight()) / 4);
+    this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
     // Initialisation contenu fenêtre
     this.setJMenuBar(this.createMenuBar());
@@ -70,46 +64,22 @@ public class TwitupMainView extends JFrame
   {
     JMenuBar menu = new JMenuBar();
 
-    JMenu file = new JMenu("Fichier");
+    // Catégories menu
+    JMenu file = new JMenu("Fichier"); // FIXME : Texte brut
     menu.add(file);
-
-    JMenu help = new JMenu("?");
+    JMenu help = new JMenu("?"); // FIXME : Texte brut
     menu.add(help);
 
-    help.addActionListener(new ActionListener()
-    {
-      @Override
-      public void actionPerformed(ActionEvent e)
-      {
-        clickAbout();
-      }
-    });
-    // Item leave du JMenuFile.
-    JMenuItem leave = new JMenuItem("Quitter");
-    leave.setIcon(new ImageIcon(getClass().getClassLoader().getResource("exitIcon_20.png"))); // FIXME : Brut
+    // Sous-catégories menu
+    JMenuItem leave = new JMenuItem("Quitter"); // FIXME : Texte brut
+    leave.setIcon(new ImageIcon(getClass().getClassLoader().getResource("exitIcon_20.png"))); // FIXME : Image brut
+    leave.addActionListener(e -> this.clickLeave());
     file.add(leave);
 
-    leave.addActionListener(new ActionListener()
-    {
-      @Override
-      public void actionPerformed(ActionEvent e)
-      {
-        clickLeave();
-      }
-    });
-
-    JMenuItem about = new JMenuItem("A propos");
-    about.setIcon(new ImageIcon(getClass().getClassLoader().getResource("aboutIcon_20.png"))); // FIXME : Brut
+    JMenuItem about = new JMenuItem("A propos"); // FIXME : Texte brut
+    about.setIcon(new ImageIcon(getClass().getClassLoader().getResource("aboutIcon_20.png"))); // FIXME : Image brut
+    about.addActionListener(e -> this.clickAbout());
     help.add(about);
-
-    about.addActionListener(new ActionListener()
-    {
-      @Override
-      public void actionPerformed(ActionEvent e)
-      {
-        clickAbout();
-      }
-    });
 
     return menu;
   }
@@ -121,6 +91,6 @@ public class TwitupMainView extends JFrame
 
   protected void clickLeave()
   {
-    this.twitupController.closeWindow();
+    this.twitupController.exitTwitup();
   }
 }

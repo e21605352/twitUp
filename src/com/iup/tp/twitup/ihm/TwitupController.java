@@ -1,33 +1,47 @@
 package com.iup.tp.twitup.ihm;
 
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
+import java.io.Serializable;
+
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
-public class TwitupController
+public class TwitupController implements Serializable
 {
+  private static final long serialVersionUID = 4092742481805901354L;
 
-  protected TwitupMainView twitupView;
+  /**
+   * Vue principale de l'application.
+   */
+  protected TwitupMainView twitupMainView;
 
-  public void closeWindow()
-  {
-    this.exitTwitup();
-  }
-
-  public void showAbout()
-  {
-    // FIXME : Texte brut
-    ImageIcon icon = new ImageIcon(getClass().getClassLoader().getResource("logoIUP_50.jpg"));
-    JLabel content = new JLabel("<html><center>UBO M2-TILL<br/>Département Informatique</center></html>",
-        SwingConstants.CENTER);
-
-    JOptionPane.showMessageDialog(this.twitupView, content, "A propos", JOptionPane.PLAIN_MESSAGE, icon);
-  }
-
+  /**
+   * Ferme l'application.
+   */
   public void exitTwitup()
   {
-    this.twitupView.dispose();
+    this.twitupMainView.dispose();
+  }
+
+  /**
+   * Affiche le OptionPane "A propos".
+   */
+  public void showAbout()
+  {
+    ImageIcon icon = new ImageIcon(getClass().getClassLoader().getResource("logoIUP_50.jpg")); // FIXME : Image brut
+
+    JPanel content = new JPanel(new GridBagLayout());
+    content.add(new JLabel("UBO M2-TILL", SwingConstants.CENTER), new GridBagConstraints(0, 0, 1, 1, 1, 1,
+        GridBagConstraints.NORTH, GridBagConstraints.BOTH, new Insets(0, 0, 0, 0), 0, 0)); // FIXME : Texte brut
+    content.add(new JLabel("Département Informatique", SwingConstants.CENTER), new GridBagConstraints(0, 1, 1, 1, 1, 1,
+        GridBagConstraints.NORTH, GridBagConstraints.BOTH, new Insets(0, 0, 0, 0), 0, 0)); // FIXME : Texte brut
+
+    JOptionPane.showMessageDialog(this.twitupMainView, content, "A propos", JOptionPane.PLAIN_MESSAGE, icon);
   }
 
   // ================================================================================
@@ -36,11 +50,11 @@ public class TwitupController
 
   public TwitupMainView getTwitupView()
   {
-    return twitupView;
+    return twitupMainView;
   }
 
   public void setTwitupView(TwitupMainView twitupView)
   {
-    this.twitupView = twitupView;
+    this.twitupMainView = twitupView;
   }
 }

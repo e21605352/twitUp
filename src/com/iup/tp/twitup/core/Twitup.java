@@ -2,6 +2,7 @@ package com.iup.tp.twitup.core;
 
 import java.io.File;
 
+import javax.swing.JFileChooser;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
@@ -90,7 +91,7 @@ public class Twitup
     this.initDirectory();
 
     // Initialisation IHM Console test
-    this.initConsoleTest();
+//    this.initConsoleTest();
   }
 
   /**
@@ -117,19 +118,30 @@ public class Twitup
     this.mMainController = new TwitupController();
     this.mMainView = new TwitupMainView(mMainController);
     this.mMainController.setTwitupView(mMainView);
-
-    this.mMainView.openWindow();
   }
 
   /**
    * Initialisation du répertoire d'échange (depuis la conf ou depuis un file chooser). <br/>
    * <b>Le chemin doit obligatoirement avoir été saisi et être valide avant de pouvoir utiliser l'application</b>
+   * 
+   * FIXME : FileChooser pas au bon endroit !!
    */
   protected void initDirectory()
   {
     if (this.mExchangeDirectoryPath == null)
     {
-
+      JFileChooser chooser = new JFileChooser();
+      chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+      int returnVal = chooser.showOpenDialog(null);
+      if (returnVal == JFileChooser.APPROVE_OPTION)
+      {
+        this.mExchangeDirectoryPath = chooser.getSelectedFile().getAbsolutePath();
+        this.mMainView.openWindow();
+      }
+      else
+      {
+        this.mMainView.dispose();
+      }
     }
   }
 
