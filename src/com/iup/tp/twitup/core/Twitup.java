@@ -90,8 +90,8 @@ public class Twitup
     // Initialisation du répertoire d'échange
     this.initDirectory();
 
-    // Initialisation IHM Console test
-//    this.initConsoleTest();
+    // Initialisation IHM Console
+    this.initConsoleTest();
   }
 
   /**
@@ -115,7 +115,7 @@ public class Twitup
    */
   protected void initGui()
   {
-    this.mMainController = new TwitupController();
+    this.mMainController = new TwitupController(this.mDatabase, this.mEntityManager);
     this.mMainView = new TwitupMainView(mMainController);
     this.mMainController.setTwitupView(mMainView);
   }
@@ -136,6 +136,7 @@ public class Twitup
       if (returnVal == JFileChooser.APPROVE_OPTION)
       {
         this.mExchangeDirectoryPath = chooser.getSelectedFile().getAbsolutePath();
+        this.initDirectory(this.mExchangeDirectoryPath);
         this.mMainView.openWindow();
       }
       else
@@ -191,14 +192,14 @@ public class Twitup
     mWatchableDirectory.addObserver(mEntityManager);
   }
 
-  public void show()
-  {
-    // ... setVisible?
-  }
-
   protected void initConsoleTest()
   {
     this.mTwitupConsoleTest = new TwitupConsoleTest();
     this.mDatabase.addObserver(this.mTwitupConsoleTest);
+  }
+
+  public void show()
+  {
+    this.mMainController.start();
   }
 }

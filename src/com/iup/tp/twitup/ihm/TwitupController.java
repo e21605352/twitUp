@@ -11,14 +11,37 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
-public class TwitupController implements Serializable
+import com.iup.tp.twitup.core.EntityManager;
+import com.iup.tp.twitup.datamodel.IDatabase;
+import com.iup.tp.twitup.datamodel.User;
+import com.iup.tp.twitup.ihm.signin.SignInModule;
+import com.iup.tp.twitup.ihm.signup.ISignUpObserver;
+import com.iup.tp.twitup.ihm.signup.SignUpModule;
+import com.iup.tp.twitup.ihm.twit.create.CreateTwitComponent;
+
+public class TwitupController implements ISignUpObserver, Serializable
 {
   private static final long serialVersionUID = 4092742481805901354L;
 
-  /**
-   * Vue principale de l'application.
-   */
+  protected final IDatabase database;
+  protected final EntityManager entityManager;
   protected TwitupMainView twitupMainView;
+
+  protected SignInModule signInModule;
+  protected SignUpModule signUpModule;
+
+  public TwitupController(IDatabase database, EntityManager entityManager)
+  {
+    this.database = database;
+    this.entityManager = entityManager;
+  }
+
+  public void start()
+  {
+//    this.showSignUp();
+    this.twitupMainView.showView(new CreateTwitComponent(null));
+    this.twitupMainView.openWindow();
+  }
 
   /**
    * Ferme l'application.
@@ -26,6 +49,28 @@ public class TwitupController implements Serializable
   public void exitTwitup()
   {
     this.twitupMainView.dispose();
+  }
+
+  // ================================================================================
+  // Affichage des vues
+  // ================================================================================
+
+  public void showSignUp()
+  {
+    if (this.signUpModule == null)
+      this.signUpModule = new SignUpModule(this.database, this.entityManager);
+
+    this.twitupMainView.showView(signUpModule.getComponent());
+  }
+
+  /**
+   * Affiche la vue SignIn.
+   */
+  public void showSignIn()
+  {
+    if (this.signInModule == null)
+      this.signInModule = new SignInModule(null); // FIXME : PAS BIEN !
+    this.twitupMainView.showView(signInModule.getSignInComponent());
   }
 
   /**
@@ -56,5 +101,17 @@ public class TwitupController implements Serializable
   public void setTwitupView(TwitupMainView twitupView)
   {
     this.twitupMainView = twitupView;
+  }
+
+  @Override
+  public void userCreated(User user)
+  {
+
+  }
+
+  @Override
+  public void creationCancelled()
+  {
+
   }
 }

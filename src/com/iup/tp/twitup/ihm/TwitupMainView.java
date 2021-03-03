@@ -1,7 +1,9 @@
 package com.iup.tp.twitup.ihm;
 
 import java.awt.Dimension;
+import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.Insets;
 import java.awt.Toolkit;
 
 import javax.swing.ImageIcon;
@@ -37,7 +39,22 @@ public class TwitupMainView extends JFrame
     this.setVisible(true);
     this.setFocusable(true);
     this.requestFocusInWindow();
-    this.pack();
+  }
+
+  /**
+   * Affiche la vue envoyée en paramètre dans la fenêtre de l'application.
+   * 
+   * @param panel
+   *          Vue à afficher.
+   */
+  public void showView(JPanel panel)
+  {
+    this.contentPane.removeAll();
+    this.contentPane.add(panel, new GridBagConstraints(0, 0, 1, 1, 1, 1, GridBagConstraints.NORTH,
+        GridBagConstraints.BOTH, new Insets(0, 0, 0, 0), 0, 0));
+
+    this.contentPane.repaint();
+    this.contentPane.revalidate();
   }
 
   protected void initGui()
@@ -48,6 +65,8 @@ public class TwitupMainView extends JFrame
     ImageIcon icon = new ImageIcon(getClass().getClassLoader().getResource("logoIUP_50.jpg")); // FIXME : Image brut
     this.setIconImage(icon.getImage());
     this.setTitle("TwitUp"); // FIXME : Texte brut
+    this.setSize(screenSize.width * 50 / 100, screenSize.height * 75 / 100);
+    this.setMinimumSize(new Dimension(screenSize.width * 20 / 100, screenSize.height * 25 / 100));
     this.setLocation((screenSize.width - this.getWidth()) / 6, (screenSize.height - this.getHeight()) / 4);
     this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
