@@ -59,7 +59,7 @@ public class SignUpComponent extends JPanel
     try // FIXME : Chargement image
     {
       URL imageUrl = getClass().getClassLoader().getResource("twitupLogo.png").toURI().toURL();
-      JPanel imagePane = new com.iup.tp.twitup.ihm.utils.ImagePanel(ImageIO.read(imageUrl), new Dimension(100, 100));
+      JPanel imagePane = new com.iup.tp.twitup.ihm.components.ImagePanel(ImageIO.read(imageUrl), new Dimension(100, 100));
       formComponent.add(imagePane, new GridBagConstraints(0, 0, 2, 1, 1, 0, GridBagConstraints.NORTH,
           GridBagConstraints.NONE, new Insets(0, 0, 10, 0), 0, 0));
     }

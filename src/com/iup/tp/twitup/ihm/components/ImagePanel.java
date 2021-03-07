@@ -1,4 +1,4 @@
-package com.iup.tp.twitup.ihm.utils;
+package com.iup.tp.twitup.ihm.components;
 
 import java.awt.Dimension;
 import java.awt.Graphics;

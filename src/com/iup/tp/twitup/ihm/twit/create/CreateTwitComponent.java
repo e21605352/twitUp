@@ -16,14 +16,13 @@ import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.text.DefaultStyledDocument;
 
+import com.iup.tp.twitup.ihm.components.ImagePanel;
 import com.iup.tp.twitup.ihm.utils.DocumentSizeFilter;
-import com.iup.tp.twitup.ihm.utils.ImagePanel;
 
 public class CreateTwitComponent extends JPanel
 {
@@ -51,6 +50,7 @@ public class CreateTwitComponent extends JPanel
     Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 
     this.contentPane = new JPanel(new GridBagLayout());
+    this.contentPane.setOpaque(false);
     this.contentPane.setSize(new Dimension(contentPane.getWidth(), screenSize.height * 5 / 100));
     try // FIXME : A enlever
     {
@@ -66,6 +66,7 @@ public class CreateTwitComponent extends JPanel
     this.updateRemainingCharacters();
 
     this.setLayout(new GridBagLayout());
+    this.setBackground(Color.WHITE);
     this.add(this.contentPane, new GridBagConstraints(0, 0, 1, 1, 1, 1, GridBagConstraints.NORTH,
         GridBagConstraints.HORIZONTAL, new Insets(10, 10, 10, 10), 0, 0));
 
@@ -117,6 +118,7 @@ public class CreateTwitComponent extends JPanel
     {
       JPanel imagePane = new ImagePanel(ImageIO.read(this.avatarURL),
           new Dimension(screenSize.width * 3 / 100, screenSize.width * 3 / 100));
+      imagePane.setBorder(BorderFactory.createLineBorder(Color.GRAY));
       this.contentPane.add(imagePane, new GridBagConstraints(0, 0, 1, 1, 0, 0, GridBagConstraints.NORTH,
           GridBagConstraints.NONE, new Insets(0, 0, 0, 10), 0, 0));
     }
@@ -125,8 +127,8 @@ public class CreateTwitComponent extends JPanel
       e1.printStackTrace();
     }
 
-    this.contentPane.add(new JScrollPane(this.textInput), new GridBagConstraints(1, 0, 1, 1, 1, 1,
-        GridBagConstraints.NORTH, GridBagConstraints.BOTH, new Insets(0, 0, 0, 10), 0, 0));
+    this.contentPane.add(this.textInput, new GridBagConstraints(1, 0, 1, 1, 1, 1, GridBagConstraints.NORTH,
+        GridBagConstraints.BOTH, new Insets(0, 0, 0, 10), 0, 0));
 
     this.contentPane.add(new JButton("Twit"), new GridBagConstraints(2, 0, 1, 1, 0, 0, GridBagConstraints.SOUTH,
         GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 0, 0));

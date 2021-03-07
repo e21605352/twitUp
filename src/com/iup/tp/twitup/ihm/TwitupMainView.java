@@ -5,6 +5,8 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.Toolkit;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
@@ -13,6 +15,10 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.WindowConstants;
+
+import com.iup.tp.twitup.ihm.components.Divider;
+import com.iup.tp.twitup.ihm.components.iconbutton.IconButton;
+import com.iup.tp.twitup.ihm.navigation.NavigationComponent;
 
 /**
  * Classe de la vue principale de l'application.
@@ -50,7 +56,24 @@ public class TwitupMainView extends JFrame
   public void showView(JPanel panel)
   {
     this.contentPane.removeAll();
-    this.contentPane.add(panel, new GridBagConstraints(0, 0, 1, 1, 1, 1, GridBagConstraints.NORTH,
+
+    // Initialisation navigation FIXME
+    NavigationComponent navigation = new NavigationComponent();
+    List<JPanel> navigationList = new ArrayList<>();
+    navigationList.add(new IconButton("home_icon.png", "home_icon_hover.png", "Accueil"));
+    navigationList.add(new IconButton("search_icon.png", "search_icon_hover.png", "Recherche"));
+    navigationList.add(new IconButton("follow_icon.png", "follow_icon_hover.png", "Follows"));
+    navigationList.add(new IconButton("alert_icon.png", "alert_icon_hover.png", "Notifications"));
+    navigationList.add(new IconButton("profile_icon.png", "profile_icon_hover.png", "Profil"));
+    navigation.initNavigation(navigationList);
+    this.contentPane.add(navigation, new GridBagConstraints(0, 0, 1, 1, 1, 1, GridBagConstraints.NORTH,
+        GridBagConstraints.VERTICAL, new Insets(0, 0, 0, 0), 0, 0));
+
+    JPanel divider = new Divider(true, 2);
+    this.contentPane.add(divider, new GridBagConstraints(1, 0, 1, 1, 1, 1, GridBagConstraints.NORTH,
+        GridBagConstraints.VERTICAL, new Insets(0, 0, 0, 0), 0, 0));
+
+    this.contentPane.add(panel, new GridBagConstraints(2, 0, 1, 1, 1, 1, GridBagConstraints.NORTH,
         GridBagConstraints.BOTH, new Insets(0, 0, 0, 0), 0, 0));
 
     this.contentPane.repaint();

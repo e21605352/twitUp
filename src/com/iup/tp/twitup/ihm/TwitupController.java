@@ -4,6 +4,8 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.UUID;
 
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
@@ -13,11 +15,12 @@ import javax.swing.SwingConstants;
 
 import com.iup.tp.twitup.core.EntityManager;
 import com.iup.tp.twitup.datamodel.IDatabase;
+import com.iup.tp.twitup.datamodel.Twit;
 import com.iup.tp.twitup.datamodel.User;
+import com.iup.tp.twitup.ihm.dashboard.DashboardModule;
 import com.iup.tp.twitup.ihm.signin.SignInModule;
 import com.iup.tp.twitup.ihm.signup.ISignUpObserver;
 import com.iup.tp.twitup.ihm.signup.SignUpModule;
-import com.iup.tp.twitup.ihm.twit.create.CreateTwitComponent;
 
 public class TwitupController implements ISignUpObserver, Serializable
 {
@@ -39,7 +42,18 @@ public class TwitupController implements ISignUpObserver, Serializable
   public void start()
   {
 //    this.showSignUp();
-    this.twitupMainView.showView(new CreateTwitComponent(null));
+//    this.twitupMainView.showView(new CreateTwitComponent(null));
+
+    User user = new User(UUID.randomUUID(), "alanSmithee", "1234", "Alan", new HashSet<>(), "");
+    String message = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi sit amet dictum urna, eget suscipit ligula. Aliquam porttitor finibus sollicitudin.";
+
+    this.entityManager.sendUser(user);
+    for (int i = 0; i < 2; i++)
+    {
+      this.entityManager.sendTwit(new Twit(user, message));
+    }
+
+    this.twitupMainView.showView(new DashboardModule(database, entityManager).getDashboardComponent());
     this.twitupMainView.openWindow();
   }
 

@@ -24,7 +24,7 @@ public class CreateTwitController implements Serializable
 
   public void twit()
   {
-    Twit twit = new Twit(null, )
+    Twit twit = new Twit(null, "");
   }
 
   protected Twit generateTwit()
