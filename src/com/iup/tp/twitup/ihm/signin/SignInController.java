@@ -1,58 +1,69 @@
 package com.iup.tp.twitup.ihm.signin;
 
-import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
 import com.iup.tp.twitup.datamodel.IDatabase;
+import com.iup.tp.twitup.datamodel.User;
 
-public class SignInController implements ISignInController, Serializable
+public class SignInController implements ISignInComponentObserver
 {
-  private static final long serialVersionUID = 3174730389204825979L;
+  protected final IDatabase database;
 
-  protected IDatabase database;
-  protected SignInComponent signInGraphic;
+  protected final Set<ISignInObserver> observers;
 
-  /**
-   * Liste des observateurs de la connexion d'un utilisateur.
-   */
-  protected final Set<ISignInControllerObserver> observers;
-
-  public SignInController()
+  public SignInController(IDatabase database)
   {
+    this.database = database;
     this.observers = new HashSet<>();
   }
 
-  // TODO : Connexion
-  public void connect()
+  @Override
+  public void notifyConnect(String login, String password)
   {
-    // Connexion
-    this.connectUser();
-    System.out.println("CONNEXION");
+    User connectedUser = null;
 
-    // Notification des observateurs
-    for (ISignInControllerObserver observer : this.observers)
+    if (this.isFormValid(login, password))
     {
-      observer.notifyUserConnected(null);
+      for (User user : this.database.getUsers())
+      {
+        if (this.isSameUser(login, password, user))
+        {
+          connectedUser = user;
+          break;
+        }
+      }
+    }
+
+    if (connectedUser != null)
+    {
+      for (ISignInObserver observer : this.observers)
+      {
+        observer.notifyUserConnected(connectedUser);
+      }
+    }
+    else
+    {
+      // TODO : Signaler utilisateur inconnu
     }
   }
 
-  // TODO : Cancel
-  public void cancel()
+  @Override
+  public void notifyCancel()
   {
-    System.out.println("CANCEL");
+    for (ISignInObserver observer : this.observers)
+    {
+      observer.notifyCancel();
+    }
   }
 
-  protected void connectUser()
+  protected boolean isSameUser(String userTag, String password, User user)
   {
-
+    return user.getUserTag().equals(userTag) && user.getUserPassword().equals(password);
   }
 
-  protected boolean isFormValid()
+  protected boolean isFormValid(String login, String password)
   {
-    String login = this.signInGraphic.getLogin();
-    String password = this.signInGraphic.getPassword();
-
     return !login.isEmpty() && !password.isEmpty();
   }
 
@@ -60,29 +71,13 @@ public class SignInController implements ISignInController, Serializable
   // Gestion observeurs
   // ================================================================================
 
-  @Override
-  public void addObserver(ISignInControllerObserver observer)
+  public void addObserver(ISignInObserver observer)
   {
     this.observers.add(observer);
   }
 
-  @Override
-  public void deleteObserver(ISignInControllerObserver observer)
+  public void deleteObserver(ISignInObserver observer)
   {
     this.observers.remove(observer);
-  }
-
-  // ================================================================================
-  // Accesseurs
-  // ================================================================================
-
-  public SignInComponent getSignInGraphic()
-  {
-    return signInGraphic;
-  }
-
-  public void setSignInView(SignInComponent signInGraphic)
-  {
-    this.signInGraphic = signInGraphic;
   }
 }

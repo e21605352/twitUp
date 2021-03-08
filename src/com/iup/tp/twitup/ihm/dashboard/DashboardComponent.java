@@ -19,6 +19,7 @@ public class DashboardComponent extends JPanel
 
   protected CreateTwitComponent createTwitComponent;
   protected TwitTimelineComponent twitTimelineComponent;
+
   protected JPanel contentPane;
 
   public DashboardComponent(CreateTwitComponent createTwitComponent, TwitTimelineComponent twitTimelineComponent)

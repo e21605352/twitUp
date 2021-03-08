@@ -3,10 +3,13 @@ package com.iup.tp.twitup.ihm.signin;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
 /**
@@ -19,16 +22,16 @@ public class SignInComponent extends JPanel
 {
   private static final long serialVersionUID = 7603526814136132461L;
 
-  protected SignInController signInController;
-
   protected JPanel contentPane;
   protected JTextField loginInput;
   protected JTextField passwordInput;
 
-  public SignInComponent(SignInController signInController)
+  protected final Set<ISignInComponentObserver> observers;
+
+  public SignInComponent()
   {
-    this.signInController = signInController;
     this.initComponent();
+    this.observers = new HashSet<>();
   }
 
   /**
@@ -38,9 +41,11 @@ public class SignInComponent extends JPanel
   {
     this.setLayout(new GridBagLayout());
     this.contentPane = new JPanel(new GridBagLayout());
-
     this.add(this.contentPane, new GridBagConstraints(0, 0, 1, 1, 1, 1, GridBagConstraints.CENTER,
         GridBagConstraints.BOTH, new Insets(10, 10, 10, 10), 0, 0));
+
+    this.loginInput = new JTextField();
+    this.passwordInput = new JPasswordField();
 
     this.placeComponents();
   }
@@ -77,12 +82,18 @@ public class SignInComponent extends JPanel
 
   protected void clickConnect()
   {
-    this.signInController.connect();
+    for (ISignInComponentObserver observer : this.observers)
+    {
+      observer.notifyConnect(this.loginInput.getText(), this.passwordInput.getText());
+    }
   }
 
   protected void clickCancel()
   {
-    this.signInController.cancel();
+    for (ISignInComponentObserver observer : this.observers)
+    {
+      observer.notifyCancel();
+    }
   }
 
   public String getLogin()
@@ -93,5 +104,19 @@ public class SignInComponent extends JPanel
   public String getPassword()
   {
     return this.passwordInput.getText();
+  }
+
+  // ================================================================================
+  // Gestion observeurs
+  // ================================================================================
+
+  public void addObserver(ISignInComponentObserver observer)
+  {
+    this.observers.add(observer);
+  }
+
+  public void deleteObserver(ISignInComponentObserver observer)
+  {
+    this.observers.remove(observer);
   }
 }

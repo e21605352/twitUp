@@ -1,42 +1,45 @@
 package com.iup.tp.twitup.ihm.signin;
 
+import javax.swing.JPanel;
+
 import com.iup.tp.twitup.datamodel.IDatabase;
-import com.iup.tp.twitup.datamodel.User;
+import com.iup.tp.twitup.ihm.IModule;
 
-public class SignInModule implements ISignInControllerObserver
+public class SignInModule implements IModule
 {
-  IDatabase database;
-
-  SignInController signInController;
-  SignInComponent signInComponent;
+  protected final SignInController signInController;
+  protected final SignInComponent signInComponent;
 
   public SignInModule(IDatabase database)
   {
-    this.database = database;
-
-    this.signInController = new SignInController();
-    this.signInComponent = new SignInComponent(this.signInController);
-    this.signInController.setSignInView(this.signInComponent);
-    this.signInController.addObserver(this);
+    this.signInComponent = new SignInComponent();
+    this.signInController = new SignInController(database);
+    this.signInComponent.addObserver(this.signInController);
   }
 
   @Override
-  public void notifyUserConnected(User connectedUser)
-  {
-    System.out.println("NOTIFICATION FIN MODULE");
-  }
-
-  public void dispose()
-  {
-    this.signInController.deleteObserver(this);
-  }
-
-  // ================================================================================
-  // Accesseurs
-  // ================================================================================
-
-  public SignInComponent getSignInComponent()
+  public JPanel getView()
   {
     return this.signInComponent;
+  }
+
+  @Override
+  public void dispose()
+  {
+    this.signInComponent.deleteObserver(this.signInController);
+  }
+
+  // ================================================================================
+  // Gestion observeurs
+  // ================================================================================
+
+  public void addObserver(ISignInObserver observer)
+  {
+    this.signInController.addObserver(observer);
+  }
+
+  public void deleteObserver(ISignInObserver observer)
+  {
+    this.signInController.deleteObserver(observer);
   }
 }

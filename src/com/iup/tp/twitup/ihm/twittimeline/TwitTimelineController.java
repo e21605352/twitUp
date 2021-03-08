@@ -7,46 +7,43 @@ import com.iup.tp.twitup.datamodel.User;
 public class TwitTimelineController implements IDatabaseObserver
 {
 
+  protected TwitTimelineModel twitTimelineModel;
+  protected TwitTimelineComponent twitTimelineComponent;
+
   @Override
   public void notifyTwitAdded(Twit addedTwit)
   {
-    // TODO Auto-generated method stub
-
+    this.twitTimelineModel.addTwit(addedTwit);
   }
 
   @Override
   public void notifyTwitDeleted(Twit deletedTwit)
   {
-    // TODO Auto-generated method stub
-
+    this.twitTimelineModel.removeTwit(deletedTwit);
   }
 
   @Override
   public void notifyTwitModified(Twit modifiedTwit)
   {
-    // TODO Auto-generated method stub
-
+    // NOT IMPLEMENTED
   }
 
   @Override
   public void notifyUserAdded(User addedUser)
   {
-    // TODO Auto-generated method stub
-
+    // NOT IMPLEMENTED
   }
 
   @Override
   public void notifyUserDeleted(User deletedUser)
   {
-    // TODO Auto-generated method stub
-
+    // NOT IMPLEMENTED
   }
 
   @Override
   public void notifyUserModified(User modifiedUser)
   {
-    // TODO Auto-generated method stub
-
+    // NOT IMPLEMENTED
   }
 
 }

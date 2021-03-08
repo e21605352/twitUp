@@ -1,16 +1,36 @@
 package com.iup.tp.twitup.ihm.navigation;
 
+import javax.swing.JPanel;
+
 public class NavigationModule
 {
-
-  protected final NavigationController navigationController;
   protected final NavigationComponent navigationComponent;
 
   public NavigationModule()
   {
-    this.navigationController = new NavigationController();
     this.navigationComponent = new NavigationComponent();
   }
-  
-  protected List<IconButton> 
+
+  // ================================================================================
+  // Gestion observeurs
+  // ================================================================================
+
+  public void addObserver(INavigationObserver observer)
+  {
+    this.navigationComponent.addObserver(observer);
+  }
+
+  public void deleteObserver(INavigationObserver observer)
+  {
+    this.navigationComponent.deleteObserver(observer);
+  }
+
+  // ================================================================================
+  // Accesseurs
+  // ================================================================================
+
+  public JPanel getComponent()
+  {
+    return this.navigationComponent;
+  }
 }

@@ -5,20 +5,21 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.Toolkit;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.SwingConstants;
 import javax.swing.WindowConstants;
 
 import com.iup.tp.twitup.ihm.components.Divider;
-import com.iup.tp.twitup.ihm.components.iconbutton.IconButton;
-import com.iup.tp.twitup.ihm.navigation.NavigationComponent;
 
 /**
  * Classe de la vue principale de l'application.
@@ -27,57 +28,15 @@ public class TwitupMainView extends JFrame
 {
   private static final long serialVersionUID = -8343902931017961107L;
 
-  protected TwitupController twitupController;
-
-  /**
-   * Contenu de la fenêtre d'application.
-   */
   protected JPanel contentPane;
+  protected JPanel navigationComponent;
 
-  public TwitupMainView(TwitupController twitupController)
+  protected final Set<IMainViewListener> listeners;
+
+  public TwitupMainView()
   {
-    this.twitupController = twitupController;
+    this.listeners = new HashSet<>();
     this.initGui();
-  }
-
-  public void openWindow()
-  {
-    this.setVisible(true);
-    this.setFocusable(true);
-    this.requestFocusInWindow();
-  }
-
-  /**
-   * Affiche la vue envoyée en paramètre dans la fenêtre de l'application.
-   * 
-   * @param panel
-   *          Vue à afficher.
-   */
-  public void showView(JPanel panel)
-  {
-    this.contentPane.removeAll();
-
-    // Initialisation navigation FIXME
-    NavigationComponent navigation = new NavigationComponent();
-    List<JPanel> navigationList = new ArrayList<>();
-    navigationList.add(new IconButton("home_icon.png", "home_icon_hover.png", "Accueil"));
-    navigationList.add(new IconButton("search_icon.png", "search_icon_hover.png", "Recherche"));
-    navigationList.add(new IconButton("follow_icon.png", "follow_icon_hover.png", "Follows"));
-    navigationList.add(new IconButton("alert_icon.png", "alert_icon_hover.png", "Notifications"));
-    navigationList.add(new IconButton("profile_icon.png", "profile_icon_hover.png", "Profil"));
-    navigation.initNavigation(navigationList);
-    this.contentPane.add(navigation, new GridBagConstraints(0, 0, 1, 1, 1, 1, GridBagConstraints.NORTH,
-        GridBagConstraints.VERTICAL, new Insets(0, 0, 0, 0), 0, 0));
-
-    JPanel divider = new Divider(true, 2);
-    this.contentPane.add(divider, new GridBagConstraints(1, 0, 1, 1, 1, 1, GridBagConstraints.NORTH,
-        GridBagConstraints.VERTICAL, new Insets(0, 0, 0, 0), 0, 0));
-
-    this.contentPane.add(panel, new GridBagConstraints(2, 0, 1, 1, 1, 1, GridBagConstraints.NORTH,
-        GridBagConstraints.BOTH, new Insets(0, 0, 0, 0), 0, 0));
-
-    this.contentPane.repaint();
-    this.contentPane.revalidate();
   }
 
   protected void initGui()
@@ -85,9 +44,9 @@ public class TwitupMainView extends JFrame
     Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 
     // Initialisation paramètres fenêtre.
-    ImageIcon icon = new ImageIcon(getClass().getClassLoader().getResource("logoIUP_50.jpg")); // FIXME : Image brut
+    ImageIcon icon = new ImageIcon(getClass().getClassLoader().getResource("logoIUP_50.jpg"));
     this.setIconImage(icon.getImage());
-    this.setTitle("TwitUp"); // FIXME : Texte brut
+    this.setTitle("TwitUp");
     this.setSize(screenSize.width * 50 / 100, screenSize.height * 75 / 100);
     this.setMinimumSize(new Dimension(screenSize.width * 20 / 100, screenSize.height * 25 / 100));
     this.setLocation((screenSize.width - this.getWidth()) / 6, (screenSize.height - this.getHeight()) / 4);
@@ -99,6 +58,38 @@ public class TwitupMainView extends JFrame
     this.setContentPane(this.contentPane);
   }
 
+  public void openWindow()
+  {
+    this.setVisible(true);
+    this.setFocusable(true);
+    this.requestFocusInWindow();
+  }
+
+  public void showView(IModule module, boolean isNavigable)
+  {
+    this.contentPane.removeAll();
+
+    if (isNavigable)
+    {
+      this.contentPane.add(this.navigationComponent, new GridBagConstraints(0, 0, 1, 1, 1, 1, GridBagConstraints.NORTH,
+          GridBagConstraints.VERTICAL, new Insets(0, 0, 0, 0), 0, 0));
+
+      this.contentPane.add(new Divider(true, 2), new GridBagConstraints(1, 0, 1, 1, 1, 1, GridBagConstraints.NORTH,
+          GridBagConstraints.VERTICAL, new Insets(0, 0, 0, 0), 0, 0));
+    }
+
+    this.contentPane.add(module.getView(), new GridBagConstraints(2, 0, 1, 1, 1, 1, GridBagConstraints.NORTH,
+        GridBagConstraints.BOTH, new Insets(0, 0, 0, 0), 0, 0));
+
+    this.contentPane.repaint();
+    this.contentPane.revalidate();
+  }
+
+  public void addIMainViewListener(IMainViewListener listener)
+  {
+    this.listeners.add(listener);
+  };
+
   /**
    * Initialise la barre de menu de l'application.
    */
@@ -107,19 +98,19 @@ public class TwitupMainView extends JFrame
     JMenuBar menu = new JMenuBar();
 
     // Catégories menu
-    JMenu file = new JMenu("Fichier"); // FIXME : Texte brut
+    JMenu file = new JMenu("Fichier");
     menu.add(file);
-    JMenu help = new JMenu("?"); // FIXME : Texte brut
+    JMenu help = new JMenu("?");
     menu.add(help);
 
     // Sous-catégories menu
-    JMenuItem leave = new JMenuItem("Quitter"); // FIXME : Texte brut
-    leave.setIcon(new ImageIcon(getClass().getClassLoader().getResource("exitIcon_20.png"))); // FIXME : Image brut
+    JMenuItem leave = new JMenuItem("Quitter");
+    leave.setIcon(new ImageIcon(getClass().getClassLoader().getResource("exitIcon_20.png")));
     leave.addActionListener(e -> this.clickLeave());
     file.add(leave);
 
-    JMenuItem about = new JMenuItem("A propos"); // FIXME : Texte brut
-    about.setIcon(new ImageIcon(getClass().getClassLoader().getResource("aboutIcon_20.png"))); // FIXME : Image brut
+    JMenuItem about = new JMenuItem("A propos");
+    about.setIcon(new ImageIcon(getClass().getClassLoader().getResource("aboutIcon_20.png")));
     about.addActionListener(e -> this.clickAbout());
     help.add(about);
 
@@ -128,11 +119,30 @@ public class TwitupMainView extends JFrame
 
   protected void clickAbout()
   {
-    this.twitupController.showAbout();
+    ImageIcon icon = new ImageIcon(getClass().getClassLoader().getResource("logoIUP_50.jpg"));
+    JPanel content = new JPanel(new GridBagLayout());
+    content.add(new JLabel("UBO M2-TILL", SwingConstants.CENTER), new GridBagConstraints(0, 0, 1, 1, 1, 1,
+        GridBagConstraints.NORTH, GridBagConstraints.BOTH, new Insets(0, 0, 0, 0), 0, 0));
+    content.add(new JLabel("Département Informatique", SwingConstants.CENTER), new GridBagConstraints(0, 1, 1, 1, 1, 1,
+        GridBagConstraints.NORTH, GridBagConstraints.BOTH, new Insets(0, 0, 0, 0), 0, 0));
+
+    JOptionPane.showMessageDialog(this, content, "A propos", JOptionPane.PLAIN_MESSAGE, icon);
   }
 
   protected void clickLeave()
   {
-    this.twitupController.exitTwitup();
+    for (IMainViewListener listener : this.listeners)
+    {
+      listener.run();
+    }
+  }
+
+  // ================================================================================
+  // Accesseurs
+  // ================================================================================
+
+  public void setNavigationComponent(JPanel navigationComponent)
+  {
+    this.navigationComponent = navigationComponent;
   }
 }

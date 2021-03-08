@@ -27,11 +27,11 @@ public class IconButton extends JPanel
   protected JPanel iconImageHover;
   protected String tooltip;
 
-  protected final Set<IIconButtonObserver> observers;
+  protected final Set<IIconButtonListener> listeners;
 
   public IconButton(String iconPath, String iconHoverPath, String tooltip)
   {
-    this.observers = new HashSet<>();
+    this.listeners = new HashSet<>();
     this.initComponent(iconPath, iconHoverPath, tooltip);
   }
 
@@ -99,11 +99,16 @@ public class IconButton extends JPanel
 
   protected void doClick()
   {
-    for (IIconButtonObserver observer : this.observers)
+    for (IIconButtonListener listener : this.listeners)
     {
-      observer.notifyClick();
+      listener.run();
     }
   }
+
+  public void addIIconButtonListener(IIconButtonListener listener)
+  {
+    this.listeners.add(listener);
+  };
 
   protected void updateComponentOnHover(boolean onHover)
   {
@@ -122,5 +127,11 @@ public class IconButton extends JPanel
 
     this.revalidate();
     this.repaint();
+  }
+
+  public void addActionListener(Object object)
+  {
+    // TODO Auto-generated method stub
+
   }
 }

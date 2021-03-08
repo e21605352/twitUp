@@ -7,29 +7,31 @@ import java.awt.Insets;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import javax.swing.JPanel;
 
-import com.iup.tp.twitup.datamodel.IDatabase;
-import com.iup.tp.twitup.datamodel.IDatabaseObserver;
 import com.iup.tp.twitup.datamodel.Twit;
 import com.iup.tp.twitup.datamodel.User;
 import com.iup.tp.twitup.ihm.components.Divider;
 import com.iup.tp.twitup.ihm.twit.read.ReadTwitComponent;
 
-public class TwitTimelineComponent extends JPanel implements IDatabaseObserver
+public class TwitTimelineComponent extends JPanel implements ITwitTimelineModelObserver
 {
   private static final long serialVersionUID = -6830816855006492544L;
 
-  protected IDatabase database;
+  protected final TwitTimelineModel twitTimelineModel;
+  protected final Map<Twit, ReadTwitComponent> twitComponentsMap;
 
   protected JPanel contentPane;
 
-  public TwitTimelineComponent(IDatabase database)
+  public TwitTimelineComponent(TwitTimelineModel twitTimelineModel)
   {
-    this.database = database;
+    this.twitTimelineModel = twitTimelineModel;
+    this.twitComponentsMap = new HashMap<>();
 
     this.initComponent();
   }
@@ -68,7 +70,6 @@ public class TwitTimelineComponent extends JPanel implements IDatabaseObserver
     {
       if (i == twitss.size() - 1)
       {
-        System.out.println("???");
         this.contentPane.add(new ReadTwitComponent(twitss.get(i)), new GridBagConstraints(0, counter++, 1, 1, 1, 1,
             GridBagConstraints.NORTH, GridBagConstraints.HORIZONTAL, new Insets(0, 0, 0, 0), 0, 0));
       }
@@ -81,9 +82,6 @@ public class TwitTimelineComponent extends JPanel implements IDatabaseObserver
             GridBagConstraints.NORTH, GridBagConstraints.HORIZONTAL, new Insets(0, 0, 0, 0), 0, 0));
       }
     }
-
-//    if (counter > 0)
-//      this.contentPane.remove(counter - 1);
   }
 
   @Override
