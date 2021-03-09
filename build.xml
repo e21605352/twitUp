@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <project name="twitup" default="jar" xmlns:ivy="antlib:org.apache.ivy.ant" basedir=".">
 
-<property name="exportDestination"       value="${basedir}/gerenated"/>
+<property name="exportDestination"       value="${basedir}/generated"/>
 
 <property name="ProjectName"             value="${basedir}"/>
 <property name="jarFileName"             value="Twitup"/>
