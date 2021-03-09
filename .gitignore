@@ -1,7 +1,8 @@
 #
 # Project specific excludes
 #
-
+generated/
+MANIFEST.*
 tomcat
 
 #
