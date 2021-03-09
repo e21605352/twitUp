@@ -5,6 +5,7 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.util.List;
+import java.util.Set;
 
 import javax.swing.JPanel;
 
@@ -72,6 +73,13 @@ public class TwitTimelineComponent extends JPanel implements ITwitTimelineModelO
   }
 
   @Override
+  public void notifyTwitsAdded(Set<Twit> addedTwits)
+  {
+    this.placeComponents();
+    this.repaintContentPane();
+  }
+
+  @Override
   public void notifyTwitDeleted(Twit deletedTwit)
   {
     this.placeComponents();
@@ -79,16 +87,10 @@ public class TwitTimelineComponent extends JPanel implements ITwitTimelineModelO
   }
 
   @Override
-  public void notifyTwitSorted()
+  public void notifyTwitsDeleted(Set<Twit> deletedTwits)
   {
     this.placeComponents();
     this.repaintContentPane();
-  }
-
-  @Override
-  public void notifyTwitModified(Twit modifiedTwit)
-  {
-    // NOT IMPLEMENTED
   }
 
   /**

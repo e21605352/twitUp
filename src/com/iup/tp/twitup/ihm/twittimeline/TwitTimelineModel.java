@@ -32,6 +32,22 @@ public class TwitTimelineModel implements Serializable
     }
   }
 
+  public void addAllTwits(Set<Twit> twits)
+  {
+    this.twits.addAll(twits);
+    this.sortTwitsByEmissionDateOrder();
+
+    for (ITwitTimelineModelObserver observer : this.observers)
+    {
+      observer.notifyTwitsAdded(twits);
+    }
+  }
+
+  protected void sortTwitsByEmissionDateOrder()
+  {
+    this.twits.sort((Twit t1, Twit t2) -> Long.compare(t1.getEmissionDate(), t2.getEmissionDate()) * -1);
+  }
+
   public void removeTwit(Twit removedTwit)
   {
     this.twits.remove(removedTwit);
@@ -42,9 +58,15 @@ public class TwitTimelineModel implements Serializable
     }
   }
 
-  protected void sortTwitsByEmissionDateOrder()
+  public void removeAllTwits(Set<Twit> twits)
   {
-    this.twits.sort((Twit t1, Twit t2) -> Long.compare(t1.getEmissionDate(), t2.getEmissionDate()) * -1);
+    this.twits.removeAll(twits);
+    this.sortTwitsByEmissionDateOrder();
+
+    for (ITwitTimelineModelObserver observer : this.observers)
+    {
+      observer.notifyTwitsAdded(twits);
+    }
   }
 
   // ================================================================================

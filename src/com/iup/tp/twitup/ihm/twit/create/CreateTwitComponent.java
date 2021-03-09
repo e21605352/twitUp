@@ -6,8 +6,8 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.Toolkit;
+import java.io.File;
 import java.io.IOException;
-import java.net.URISyntaxException;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -113,14 +113,13 @@ public class CreateTwitComponent extends JPanel
 
     try
     {
-      JPanel imagePane = new ImagePanel(
-          ImageIO.read(getClass().getClassLoader().getResource(user.getAvatarPath()).toURI().toURL()),
+      JPanel imagePane = new ImagePanel(ImageIO.read(new File(user.getAvatarPath()).toURI().toURL()),
           new Dimension(screenSize.width * 3 / 100, screenSize.width * 3 / 100));
       imagePane.setBorder(BorderFactory.createLineBorder(Color.GRAY));
       this.contentPane.add(imagePane, new GridBagConstraints(0, 0, 1, 1, 0, 0, GridBagConstraints.NORTH,
           GridBagConstraints.NONE, new Insets(0, 0, 0, 10), 0, 0));
     }
-    catch (IOException | URISyntaxException e)
+    catch (IOException e)
     {
       e.printStackTrace();
     }

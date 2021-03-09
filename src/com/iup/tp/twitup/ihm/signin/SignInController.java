@@ -49,11 +49,11 @@ public class SignInController implements ISignInComponentObserver
   }
 
   @Override
-  public void notifyCancel()
+  public void notifySignUp()
   {
     for (ISignInObserver observer : this.observers)
     {
-      observer.notifyCancel();
+      observer.notifySignUp();
     }
   }
 

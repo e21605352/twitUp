@@ -53,14 +53,6 @@ public class TwitupController implements INavigationObserver, ISignUpObserver, I
   // Affichage des vues
   // ================================================================================
 
-  public void showSignUp()
-  {
-    if (this.signUpModule == null)
-      this.signUpModule = new SignUpModule(this.database, this.entityManager);
-
-    this.twitupMainView.showView(this.signUpModule, false);
-  }
-
   public void showSignIn()
   {
     if (this.signInModule == null)
@@ -70,6 +62,15 @@ public class TwitupController implements INavigationObserver, ISignUpObserver, I
     }
 
     this.twitupMainView.showView(this.signInModule, false);
+  }
+
+  public void showSignUp()
+  {
+    if (this.signUpModule == null)
+      this.signUpModule = new SignUpModule(this.database, this.entityManager);
+    this.signUpModule.addObserver(this);
+
+    this.twitupMainView.showView(this.signUpModule, false);
   }
 
   public void showHome()
@@ -127,7 +128,7 @@ public class TwitupController implements INavigationObserver, ISignUpObserver, I
   }
 
   // ================================================================================
-  // Méthodes ISignUpObserver
+  // Méthodes ISignInObserver
   // ================================================================================
 
   @Override
@@ -138,9 +139,9 @@ public class TwitupController implements INavigationObserver, ISignUpObserver, I
   }
 
   @Override
-  public void notifyCancel()
+  public void notifySignUp()
   {
-    // NOT IMPLEMENTED
+    this.showSignUp();
   }
 
   // ================================================================================
@@ -148,15 +149,16 @@ public class TwitupController implements INavigationObserver, ISignUpObserver, I
   // ================================================================================
 
   @Override
-  public void userCreated(User user)
+  public void notifyUserCreated(User user)
   {
-
+    this.session = user;
+    this.showHome();
   }
 
   @Override
-  public void creationCancelled()
+  public void notifySignIn()
   {
-
+    this.showSignIn();
   }
 
 }

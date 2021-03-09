@@ -7,8 +7,8 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.Toolkit;
+import java.io.File;
 import java.io.IOException;
-import java.net.URISyntaxException;
 import java.util.Date;
 
 import javax.imageio.ImageIO;
@@ -59,14 +59,14 @@ public class ReadTwitComponent extends JPanel
 
     try // FIXME : Chargement image
     {
-      JPanel imagePane = new ImagePanel(
-          ImageIO.read(getClass().getClassLoader().getResource("twitupLogo.png").toURI().toURL()),
+      JPanel imagePane = new ImagePanel(ImageIO.read(new File(twitCreator.getAvatarPath()).toURI().toURL()),
           new Dimension(screenSize.width * 3 / 100, screenSize.width * 3 / 100));
+
       imagePane.setBorder(BorderFactory.createLineBorder(Color.GRAY));
       this.contentPane.add(imagePane, new GridBagConstraints(0, 0, 1, 2, 0, 0, GridBagConstraints.NORTH,
           GridBagConstraints.NONE, new Insets(0, 0, 0, 10), 0, 0));
     }
-    catch (IOException | URISyntaxException e1)
+    catch (IOException e1)
     {
       e1.printStackTrace();
     }

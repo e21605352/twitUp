@@ -4,7 +4,7 @@ import com.iup.tp.twitup.datamodel.User;
 
 public interface ISignUpObserver
 {
-  public void userCreated(User user);
+  public void notifyUserCreated(User user);
 
-  public void creationCancelled();
+  public void notifySignIn();
 }

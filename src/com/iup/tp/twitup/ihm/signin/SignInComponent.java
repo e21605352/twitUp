@@ -25,9 +25,6 @@ import com.iup.tp.twitup.ihm.components.link.LinkComponent;
 
 /**
  * Composant graphique formulaire de connexion.
- * 
- * @author KAN
- *
  */
 public class SignInComponent extends JPanel
 {
@@ -104,11 +101,6 @@ public class SignInComponent extends JPanel
         GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 0, 0));
   }
 
-  protected void clickSignUp()
-  {
-    System.out.println("YEP COCK");
-  }
-
   protected JPanel generateConnectButton()
   {
     Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
@@ -130,6 +122,14 @@ public class SignInComponent extends JPanel
     for (ISignInComponentObserver observer : this.observers)
     {
       observer.notifyConnect(this.loginInput.getText(), this.passwordInput.getText());
+    }
+  }
+
+  protected void clickSignUp()
+  {
+    for (ISignInComponentObserver observer : this.observers)
+    {
+      observer.notifySignUp();
     }
   }
 

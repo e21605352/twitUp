@@ -4,5 +4,5 @@ public interface ISignInComponentObserver
 {
   public void notifyConnect(String login, String password);
 
-  public void notifyCancel();
+  public void notifySignUp();
 }

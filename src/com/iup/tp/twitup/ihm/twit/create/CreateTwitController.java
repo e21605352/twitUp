@@ -21,7 +21,10 @@ public class CreateTwitController implements ICreateTwitComponentObserver
   @Override
   public void notifySendTwit(String twitText)
   {
-    this.entityManager.sendTwit(new Twit(this.session, twitText));
-    this.createTwitComponent.clearText();
+    if (!twitText.isEmpty())
+    {
+      this.entityManager.sendTwit(new Twit(this.session, twitText));
+      this.createTwitComponent.clearText();
+    }
   }
 }

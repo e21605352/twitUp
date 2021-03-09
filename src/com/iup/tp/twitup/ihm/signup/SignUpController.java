@@ -1,6 +1,5 @@
 package com.iup.tp.twitup.ihm.signup;
 
-import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
@@ -9,13 +8,10 @@ import com.iup.tp.twitup.core.EntityManager;
 import com.iup.tp.twitup.datamodel.IDatabase;
 import com.iup.tp.twitup.datamodel.User;
 
-public class SignUpController implements ISignUpController, Serializable
+public class SignUpController implements ISignUpComponentObserver
 {
-  private static final long serialVersionUID = -8453495085017955791L;
-
   protected final IDatabase database;
   protected final EntityManager entityManager;
-  protected SignUpComponent signUpComponent;
 
   protected final Set<ISignUpObserver> observers;
 
@@ -26,78 +22,65 @@ public class SignUpController implements ISignUpController, Serializable
     this.observers = new HashSet<>();
   }
 
-  public void createUser()
+  @Override
+  public void notifySignup(String login, String username, String password, String avatarPath)
   {
-    User userCreated = this.generateUser();
-
-    if (this.userAlreadyExist(userCreated))
+    if (this.isFormValid(login, username, password, avatarPath) && !this.userAlreadyExist(login))
     {
-      // TODO : Graphique notification ou truc direct
-      System.out.println("USER ALREADY EXIST");
-    }
-    else
-    {
-      this.entityManager.sendUser(userCreated);
+      User createdUser = new User(UUID.randomUUID(), login, username, password, new HashSet<>(), avatarPath);
+      this.entityManager.sendUser(createdUser);
 
-      // Notification aux observeurs de la création
       for (ISignUpObserver observer : this.observers)
       {
-        observer.userCreated(userCreated);
+        observer.notifyUserCreated(createdUser);
       }
     }
+    else
+    {// TODO
+    }
   }
 
-  protected User generateUser()
+  @Override
+  public void notifySignin()
   {
-    String userTag = this.signUpComponent.getLogin();
-    String userPassword = this.signUpComponent.getPassword();
-    String userName = this.signUpComponent.getLastname();
-
-    return new User(UUID.randomUUID(), userTag, userPassword, userName, new HashSet<>(), ""); // FIXME
-  }
-
-  protected boolean userAlreadyExist(User user)
-  {
-    Set<User> users = this.database.getUsers();
-    return users.contains(user);
-  }
-
-  public void cancelCreation()
-  {
-    // Notification aux observeurs de l'annulation
     for (ISignUpObserver observer : this.observers)
     {
-      observer.creationCancelled();
+      observer.notifySignIn();
     }
+  }
+
+  protected boolean isFormValid(String login, String username, String password, String avatarPath)
+  {
+    return !login.isEmpty() && !username.isEmpty() && !password.isEmpty() && !avatarPath.isEmpty();
+  }
+
+  protected boolean userAlreadyExist(String login)
+  {
+    boolean exist = false;
+
+    for (User user : this.database.getUsers())
+    {
+      if (user.getUserTag().equals(login))
+      {
+        exist = true;
+        break;
+      }
+    }
+
+    return exist;
   }
 
   // ================================================================================
   // Gestion observeurs
   // ================================================================================
 
-  @Override
   public void addObserver(ISignUpObserver observer)
   {
     this.observers.add(observer);
   }
 
-  @Override
   public void deleteObserver(ISignUpObserver observer)
   {
     this.observers.remove(observer);
-  }
-
-  // ================================================================================
-  // Accesseurs
-  // ================================================================================
-
-  public SignUpComponent getSignUpComponent()
-  {
-    return signUpComponent;
-  }
-
-  public void setSignUpComponent(SignUpComponent signUpComponent)
-  {
-    this.signUpComponent = signUpComponent;
   }
 }
