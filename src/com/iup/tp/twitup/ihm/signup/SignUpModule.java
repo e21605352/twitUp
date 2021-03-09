@@ -24,6 +24,13 @@ public class SignUpModule implements IModule
     return this.signUpComponent;
   }
 
+  @Override
+  public void dispose()
+  {
+    // TODO Auto-generated method stub
+
+  }
+
   // ================================================================================
   // Gestion observeurs
   // ================================================================================
@@ -37,4 +44,5 @@ public class SignUpModule implements IModule
   {
     this.signUpController.deleteObserver(observer);
   }
+
 }

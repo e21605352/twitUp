@@ -8,5 +8,7 @@ public interface ITwitTimelineModelObserver
 
   public void notifyTwitDeleted(Twit deletedTwit);
 
+  public void notifyTwitSorted();
+
   public void notifyTwitModified(Twit modifiedTwit);
 }

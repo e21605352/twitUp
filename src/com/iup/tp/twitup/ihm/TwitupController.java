@@ -76,7 +76,7 @@ public class TwitupController implements INavigationObserver, ISignUpObserver, I
   {
     if (this.dashboardModule == null)
     {
-      this.dashboardModule = new DashboardModule(this.database, this.entityManager);
+      this.dashboardModule = new DashboardModule(this.database, this.entityManager, this.session);
     }
     this.twitupMainView.showView(this.dashboardModule, true);
   }

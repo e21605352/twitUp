@@ -1,35 +1,27 @@
 package com.iup.tp.twitup.ihm.twit.create;
 
-import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Set;
-
 import com.iup.tp.twitup.core.EntityManager;
 import com.iup.tp.twitup.datamodel.Twit;
+import com.iup.tp.twitup.datamodel.User;
 
-public class CreateTwitController implements Serializable
+public class CreateTwitController implements ICreateTwitComponentObserver
 {
-  private static final long serialVersionUID = -531304686449912295L;
-
   protected final EntityManager entityManager;
-  protected CreateTwitComponent createTwitComponent;
+  protected final User session;
 
-  protected final Set<ICreateTwitObserver> observers;
+  protected final CreateTwitComponent createTwitComponent;
 
-  public CreateTwitController(EntityManager entityManager)
+  public CreateTwitController(EntityManager entityManager, User session, CreateTwitComponent createTwitComponent)
   {
     this.entityManager = entityManager;
-    this.observers = new HashSet<>();
+    this.session = session;
+    this.createTwitComponent = createTwitComponent;
   }
 
-  public void twit()
+  @Override
+  public void notifySendTwit(String twitText)
   {
-    Twit twit = new Twit(null, "");
-  }
-
-  protected Twit generateTwit()
-  {
-
-    return null;
+    this.entityManager.sendTwit(new Twit(this.session, twitText));
+    this.createTwitComponent.clearText();
   }
 }

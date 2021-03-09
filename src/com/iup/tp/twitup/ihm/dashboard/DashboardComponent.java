@@ -10,22 +10,21 @@ import javax.swing.ScrollPaneConstants;
 import javax.swing.UIManager;
 
 import com.iup.tp.twitup.ihm.components.Divider;
-import com.iup.tp.twitup.ihm.twit.create.CreateTwitComponent;
-import com.iup.tp.twitup.ihm.twittimeline.TwitTimelineComponent;
+import com.iup.tp.twitup.ihm.twit.create.CreateTwitModule;
+import com.iup.tp.twitup.ihm.twittimeline.TwitTimelineModule;
 
 public class DashboardComponent extends JPanel
 {
   private static final long serialVersionUID = -4871680982633431617L;
 
-  protected CreateTwitComponent createTwitComponent;
-  protected TwitTimelineComponent twitTimelineComponent;
-
   protected JPanel contentPane;
+  protected JPanel createTwitComponent;
+  protected JPanel twitTimelineComponent;
 
-  public DashboardComponent(CreateTwitComponent createTwitComponent, TwitTimelineComponent twitTimelineComponent)
+  public DashboardComponent(CreateTwitModule createTwitModule, TwitTimelineModule twitTimelineModule)
   {
-    this.createTwitComponent = createTwitComponent;
-    this.twitTimelineComponent = twitTimelineComponent;
+    this.createTwitComponent = createTwitModule.getView();
+    this.twitTimelineComponent = twitTimelineModule.getView();
 
     this.initComponent();
   }

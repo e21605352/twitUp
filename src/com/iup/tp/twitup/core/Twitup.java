@@ -98,7 +98,8 @@ public class Twitup
     this.initConsoleTest();
 
     // FIXME : Temporaire
-    this.mEntityManager.sendUser(new User(UUID.randomUUID(), "test", "test", "test", new HashSet<>(), ""));
+    this.mEntityManager
+        .sendUser(new User(UUID.randomUUID(), "test", "test", "test", new HashSet<>(), "twitupLogo.png"));
   }
 
   /**

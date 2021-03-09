@@ -108,7 +108,7 @@ public class IconButton extends JPanel
   public void addIIconButtonListener(IIconButtonListener listener)
   {
     this.listeners.add(listener);
-  };
+  }
 
   protected void updateComponentOnHover(boolean onHover)
   {
