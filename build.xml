@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<project name="twitup" default="jar" xmlns:ivy="antlib:org.apache.ivy.ant" basedir=".">
+
+<property name="exportDestination"       value="${basedir}/gerenated"/>
+
+<property name="ProjectName"             value="${basedir}"/>
+<property name="jarFileName"             value="Twitup"/>
+<property name="RunnableMain-Class"      value="com.iup.tp.twitup.TwitupLauncher"/>
+
+<property name="class-files"             value="${ProjectName}/bin" />
+<property name="source-dir"              value="${ProjectName}/src" />
+
+<property name="Ant-Version"             value="Apache Ant 1.9.6"/>
+<property name="Built-By"                value="yvonnou.theo"/>
+
+	
+<!-- compile -->
+<target name="compile" >
+    <mkdir dir="${class-files}"/>
+    <javac srcdir="${source-dir}" destdir="${class-files}" includeantruntime="false" encoding="UTF-8">
+    </javac>
+</target>
+<!-- jar -->
+<target name="jar" depends="compile">
+    <manifest file = "MANIFEST.MF"> <!-- Manifest-Version: 1.0 -->
+        <attribute name = "Built-By"    value = "${Built-By}"/>
+        <attribute name = "Ant-Version" value = "${Ant-Version}"/>
+        <attribute name = "Main-Class"  value = "${RunnableMain-Class}"/>
+        <attribute name = "Class-Path"  value = "."/>
+    </manifest>
+	 <copy todir="${exportDestination}/images"> 
+	        <fileset dir="${source-dir}/resources/images" >
+	            <include name="**/*.png" />
+	            <include name="**/*.jpg" />
+	        </fileset> 
+	   </copy>
+    <jar destfile="${exportDestination}/${jarFileName}.jar" basedir="${class-files}" manifest="MANIFEST.MF">
+        <fileset dir="${source-dir}" includes="resources/*"/>
+    </jar>
+	
+</target>
+	</project>
