@@ -60,7 +60,7 @@ public class ReadTwitComponent extends JPanel
     try // FIXME : Chargement image
     {
       JPanel imagePane = new ImagePanel(ImageIO.read(new File(twitCreator.getAvatarPath()).toURI().toURL()),
-          new Dimension(screenSize.width * 3 / 100, screenSize.width * 3 / 100));
+          new Dimension(screenSize.width * 3 / 100, screenSize.width * 3 / 100), false);
 
       imagePane.setBorder(BorderFactory.createLineBorder(Color.GRAY));
       this.contentPane.add(imagePane, new GridBagConstraints(0, 0, 1, 2, 0, 0, GridBagConstraints.NORTH,

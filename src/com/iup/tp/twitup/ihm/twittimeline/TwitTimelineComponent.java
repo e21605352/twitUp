@@ -39,7 +39,6 @@ public class TwitTimelineComponent extends JPanel implements ITwitTimelineModelO
     this.placeComponents();
   }
 
-  // FIXME Création composant dans la vue ?
   protected void placeComponents()
   {
     this.contentPane.removeAll();
@@ -93,13 +92,18 @@ public class TwitTimelineComponent extends JPanel implements ITwitTimelineModelO
     this.repaintContentPane();
   }
 
+  @Override
+  public void notifyClear()
+  {
+    this.contentPane.removeAll();
+    this.repaintContentPane();
+  }
+
   /**
    * Rafraîchi le panneau principal.
    */
   protected void repaintContentPane()
   {
-    this.contentPane.removeAll();
-    this.placeComponents();
     this.revalidate();
     this.repaint();
   }

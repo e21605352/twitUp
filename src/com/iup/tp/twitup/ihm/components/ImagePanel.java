@@ -30,13 +30,13 @@ public class ImagePanel extends JPanel
    * @param dimension
    *          Dimension de l'image.
    */
-  public ImagePanel(Image image, Dimension dimension)
+  public ImagePanel(Image image, Dimension dimension, boolean keepRatio)
   {
     this.image = image;
 
     try
     {
-      this.load(dimension);
+      this.load(dimension, keepRatio);
     }
     catch (Exception e)
     {
@@ -50,7 +50,7 @@ public class ImagePanel extends JPanel
    * 
    * @param dimension
    */
-  protected void load(Dimension dimension)
+  protected void load(Dimension dimension, boolean keepRatio)
   {
 
     this.buffImage = new BufferedImage(image.getWidth(null), image.getHeight(null), BufferedImage.TYPE_INT_ARGB);
@@ -58,11 +58,11 @@ public class ImagePanel extends JPanel
     // Resize de l'image
     if (this.buffImage.getWidth() != dimension.getWidth() || this.buffImage.getHeight() != dimension.getHeight())
     {
-      this.buffImage = this.resizeImage(this.buffImage, dimension);
+      this.buffImage = this.resizeImage(this.buffImage, dimension, keepRatio);
     }
     this.setOpaque(false);
     this.setSize(new Dimension(this.buffImage.getWidth(), this.buffImage.getHeight()));
-    this.setPreferredSize(new Dimension(this.buffImage.getWidth(), this.buffImage.getHeight()));
+    this.setPreferredSize(this.getSize());
     this.setMinimumSize(this.getSize());
 
   }
@@ -81,15 +81,19 @@ public class ImagePanel extends JPanel
    * @param dimension
    * @return
    */
-  public BufferedImage resizeImage(BufferedImage original, Dimension dimension)
+  public BufferedImage resizeImage(BufferedImage original, Dimension dimension, boolean keepRatio)
   {
-
+    int newWidth = dimension.width;
+    int newHeight = dimension.height;
     double widthFactor = dimension.getWidth() / original.getWidth();
     double heightFactor = dimension.getHeight() / original.getHeight();
 
-    double factor = Math.min(widthFactor, heightFactor);
-    int newWidth = (int) (factor * original.getWidth());
-    int newHeight = (int) (factor * original.getHeight());
+    if (keepRatio)
+    {
+      double factor = Math.min(widthFactor, heightFactor);
+      newWidth = (int) (factor * original.getWidth());
+      newHeight = (int) (factor * original.getHeight());
+    }
 
     BufferedImage newImage = new BufferedImage(newWidth, newHeight, original.getType());
 

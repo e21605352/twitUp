@@ -35,21 +35,21 @@ public class SearchBarComponent extends JPanel
     this.setLayout(new GridBagLayout());
     this.contentPane = new JPanel(new GridBagLayout());
     this.add(this.contentPane, new GridBagConstraints(0, 0, 1, 1, 1, 1, GridBagConstraints.CENTER,
-        GridBagConstraints.VERTICAL, new Insets(10, 10, 10, 10), 0, 0));
+        GridBagConstraints.HORIZONTAL, new Insets(10, 10, 10, 10), 0, 0));
 
     this.placeComponents();
   }
 
   protected void placeComponents()
   {
-    Font font = new Font("Sans-serif", Font.PLAIN, 15);
     JLabel searchLabel = new JLabel("Rechercher :");
-    searchLabel.setFont(font);
-    this.contentPane.add(searchLabel, new GridBagConstraints(0, 0, 1, 1, 0, 1, GridBagConstraints.NORTH,
-        GridBagConstraints.NONE, new Insets(0, 0, 0, 5), 0, 0));
+    searchLabel.setFont(new Font("Sans-serif", Font.BOLD, 15));
+    searchLabel.setAlignmentY(CENTER_ALIGNMENT);
+    this.contentPane.add(searchLabel, new GridBagConstraints(0, 0, 1, 1, 0, 1, GridBagConstraints.CENTER,
+        GridBagConstraints.NONE, new Insets(0, 0, 0, 15), 0, 0));
 
     this.searchInput = new JTextFieldStyled();
-    this.searchInput.setFont(font);
+    this.searchInput.setFont(new Font("Sans-serif", Font.PLAIN, 15));
     this.searchInput.addKeyListener(new KeyListener()
     {
       @Override

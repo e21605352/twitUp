@@ -72,7 +72,7 @@ public class SignInComponent extends JPanel
 
       JPanel twitupBanner = new ImagePanel(
           ImageIO.read(getClass().getClassLoader().getResource("twitup-banner.png").toURI().toURL()),
-          new Dimension(screenSize.width * 20 / 100, screenSize.width * 7 / 100));
+          new Dimension(screenSize.width * 20 / 100, screenSize.width * 7 / 100), true);
       this.contentPane.add(twitupBanner, new GridBagConstraints(0, 0, 2, 1, 1, 0, GridBagConstraints.NORTH,
           GridBagConstraints.NONE, new Insets(0, 0, 40, 0), 0, 0));
     }

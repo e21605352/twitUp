@@ -46,11 +46,11 @@ public class IconButton extends JPanel
     try // FIXME
     {
       this.iconImage = new ImagePanel(ImageIO.read(getClass().getClassLoader().getResource(iconPath).toURI().toURL()),
-          new Dimension(screenSize.width * 2 / 100, screenSize.width * 2 / 100));
+          new Dimension(screenSize.width * 2 / 100, screenSize.width * 2 / 100), true);
 
       this.iconImageHover = new ImagePanel(
           ImageIO.read(getClass().getClassLoader().getResource(iconHoverPath).toURI().toURL()),
-          new Dimension(screenSize.width * 2 / 100, screenSize.width * 2 / 100));
+          new Dimension(screenSize.width * 2 / 100, screenSize.width * 2 / 100), true);
     }
     catch (URISyntaxException | IOException e1)
     {

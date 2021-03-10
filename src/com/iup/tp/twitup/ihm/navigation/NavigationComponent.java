@@ -29,7 +29,7 @@ public class NavigationComponent extends JPanel
 
     this.contentPane = new JPanel(new GridBagLayout());
     this.contentPane.setOpaque(false);
-    this.add(this.contentPane, new GridBagConstraints(0, 0, 1, 1, 1, 1, GridBagConstraints.NORTH,
+    this.add(this.contentPane, new GridBagConstraints(0, 0, 1, 1, 0, 1, GridBagConstraints.NORTH,
         GridBagConstraints.VERTICAL, new Insets(10, 10, 10, 10), 0, 0));
 
     this.placeComponents();

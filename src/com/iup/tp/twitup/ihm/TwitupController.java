@@ -8,6 +8,8 @@ import com.iup.tp.twitup.datamodel.IDatabase;
 import com.iup.tp.twitup.datamodel.User;
 import com.iup.tp.twitup.ihm.dashboard.DashboardModule;
 import com.iup.tp.twitup.ihm.navigation.INavigationObserver;
+import com.iup.tp.twitup.ihm.profile.ProfileModule;
+import com.iup.tp.twitup.ihm.search.SearchModule;
 import com.iup.tp.twitup.ihm.signin.ISignInObserver;
 import com.iup.tp.twitup.ihm.signin.SignInModule;
 import com.iup.tp.twitup.ihm.signup.ISignUpObserver;
@@ -26,6 +28,8 @@ public class TwitupController implements INavigationObserver, ISignUpObserver, I
   protected SignInModule signInModule;
   protected SignUpModule signUpModule;
   protected DashboardModule dashboardModule;
+  protected SearchModule searchModule;
+  protected ProfileModule profileModule;
 
   public TwitupController(IDatabase database, EntityManager entityManager, TwitupMainView twitupMainView)
   {
@@ -84,7 +88,28 @@ public class TwitupController implements INavigationObserver, ISignUpObserver, I
 
   public void showSearch()
   {
+    if (this.searchModule == null)
+    {
+      this.searchModule = new SearchModule(this.database);
+    }
+    this.twitupMainView.showView(this.searchModule, true);
+  }
 
+  public void showProfile(User user)
+  {
+    if (this.profileModule != null)
+    {
+      if (!this.profileModule.getUser().equals(user))
+      {
+        this.profileModule.dispose();
+        this.profileModule = new ProfileModule(user, this.database);
+      }
+    }
+    else
+    {
+      this.profileModule = new ProfileModule(user, this.database);
+    }
+    this.twitupMainView.showView(this.profileModule, true);
   }
 
   // ================================================================================
@@ -100,7 +125,7 @@ public class TwitupController implements INavigationObserver, ISignUpObserver, I
   @Override
   public void notifySearch()
   {
-    System.out.println("NAVIGATE SEARCH");
+    this.showSearch();
   }
 
   @Override
@@ -118,7 +143,7 @@ public class TwitupController implements INavigationObserver, ISignUpObserver, I
   @Override
   public void notifyProfile()
   {
-    System.out.println("NAVIGATE PROFILE");
+    this.showProfile(this.session);
   }
 
   @Override

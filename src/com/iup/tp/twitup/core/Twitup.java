@@ -1,8 +1,6 @@
 package com.iup.tp.twitup.core;
 
 import java.io.File;
-import java.util.HashSet;
-import java.util.UUID;
 
 import javax.swing.JFileChooser;
 import javax.swing.UIManager;
@@ -10,7 +8,6 @@ import javax.swing.UnsupportedLookAndFeelException;
 
 import com.iup.tp.twitup.datamodel.Database;
 import com.iup.tp.twitup.datamodel.IDatabase;
-import com.iup.tp.twitup.datamodel.User;
 import com.iup.tp.twitup.events.file.IWatchableDirectory;
 import com.iup.tp.twitup.events.file.WatchableDirectory;
 import com.iup.tp.twitup.ihm.TwitupConsoleTest;
@@ -96,10 +93,6 @@ public class Twitup
 
     // Initialisation IHM Console
     this.initConsoleTest();
-
-    // FIXME : Temporaire
-    this.mEntityManager
-        .sendUser(new User(UUID.randomUUID(), "test", "test", "test", new HashSet<>(), "twitupLogo.png"));
   }
 
   /**

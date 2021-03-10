@@ -1,4 +1,4 @@
-package com.iup.tp.twitup.ihm.search;
+package com.iup.tp.twitup.ihm.profile;
 
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -10,21 +10,21 @@ import javax.swing.ScrollPaneConstants;
 import javax.swing.UIManager;
 
 import com.iup.tp.twitup.ihm.components.Divider;
-import com.iup.tp.twitup.ihm.search.searchbar.SearchBarModule;
+import com.iup.tp.twitup.ihm.profile.profileInfos.ProfileInfosComponent;
 import com.iup.tp.twitup.ihm.twittimeline.TwitTimelineComponent;
 
-public class SearchComponent extends JPanel
+public class ProfileComponent extends JPanel
 {
-  private static final long serialVersionUID = 3998756113774886307L;
+  private static final long serialVersionUID = -4733976937847991034L;
 
   protected JPanel contentPane;
 
-  public SearchComponent(SearchBarModule searchBarModule, TwitTimelineComponent twitTimelineComponent)
+  public ProfileComponent(ProfileInfosComponent profileInfosComponent, TwitTimelineComponent twitTimelineComponent)
   {
-    this.initComponent(searchBarModule, twitTimelineComponent);
+    this.initComponent(profileInfosComponent, twitTimelineComponent);
   }
 
-  protected void initComponent(SearchBarModule searchBarModule, TwitTimelineComponent twitTimelineComponent)
+  protected void initComponent(ProfileInfosComponent profileInfosComponent, TwitTimelineComponent twitTimelineComponent)
   {
     this.contentPane = new JPanel(new GridBagLayout());
     this.setLayout(new GridBagLayout());
@@ -32,12 +32,12 @@ public class SearchComponent extends JPanel
     this.add(this.contentPane, new GridBagConstraints(0, 0, 1, 1, 1, 1, GridBagConstraints.NORTH,
         GridBagConstraints.BOTH, new Insets(0, 0, 0, 0), 0, 0));
 
-    this.placeComponents(searchBarModule.getView(), twitTimelineComponent);
+    this.placeComponents(profileInfosComponent, twitTimelineComponent);
   }
 
-  protected void placeComponents(JPanel searchBarComponent, JPanel twitTimelineComponent)
+  protected void placeComponents(JPanel profileInfosComponent, JPanel twitTimelineComponent)
   {
-    this.contentPane.add(searchBarComponent, new GridBagConstraints(0, 0, 1, 1, 1, 0, GridBagConstraints.NORTH,
+    this.contentPane.add(profileInfosComponent, new GridBagConstraints(0, 0, 1, 1, 1, 0, GridBagConstraints.NORTH,
         GridBagConstraints.HORIZONTAL, new Insets(0, 0, 0, 0), 0, 0));
 
     this.contentPane.add(new Divider(false, 15), new GridBagConstraints(0, 1, 1, 1, 1, 0, GridBagConstraints.NORTH,

@@ -71,10 +71,10 @@ public class TwitupMainView extends JFrame
 
     if (isNavigable)
     {
-      this.contentPane.add(this.navigationComponent, new GridBagConstraints(0, 0, 1, 1, 1, 1, GridBagConstraints.NORTH,
+      this.contentPane.add(this.navigationComponent, new GridBagConstraints(0, 0, 1, 1, 0, 1, GridBagConstraints.NORTH,
           GridBagConstraints.VERTICAL, new Insets(0, 0, 0, 0), 0, 0));
 
-      this.contentPane.add(new Divider(true, 2), new GridBagConstraints(1, 0, 1, 1, 1, 1, GridBagConstraints.NORTH,
+      this.contentPane.add(new Divider(true, 2), new GridBagConstraints(1, 0, 1, 1, 0, 1, GridBagConstraints.NORTH,
           GridBagConstraints.VERTICAL, new Insets(0, 0, 0, 0), 0, 0));
     }
 

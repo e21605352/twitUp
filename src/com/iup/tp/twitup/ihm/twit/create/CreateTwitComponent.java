@@ -114,7 +114,7 @@ public class CreateTwitComponent extends JPanel
     try
     {
       JPanel imagePane = new ImagePanel(ImageIO.read(new File(user.getAvatarPath()).toURI().toURL()),
-          new Dimension(screenSize.width * 3 / 100, screenSize.width * 3 / 100));
+          new Dimension(screenSize.width * 3 / 100, screenSize.width * 3 / 100), false);
       imagePane.setBorder(BorderFactory.createLineBorder(Color.GRAY));
       this.contentPane.add(imagePane, new GridBagConstraints(0, 0, 1, 1, 0, 0, GridBagConstraints.NORTH,
           GridBagConstraints.NONE, new Insets(0, 0, 0, 10), 0, 0));
@@ -155,7 +155,7 @@ public class CreateTwitComponent extends JPanel
   {
     for (ICreateTwitComponentObserver observer : this.observers)
     {
-      observer.notifySendTwit(this.textInput.getText());
+      observer.notifySendTwit(this.textInput.getText().trim());
     }
   }
 

@@ -69,6 +69,16 @@ public class TwitTimelineModel implements Serializable
     }
   }
 
+  public void clear()
+  {
+    this.twits.clear();
+
+    for (ITwitTimelineModelObserver observer : this.observers)
+    {
+      observer.notifyClear();
+    }
+  }
+
   // ================================================================================
   // Gestion observeurs
   // ================================================================================

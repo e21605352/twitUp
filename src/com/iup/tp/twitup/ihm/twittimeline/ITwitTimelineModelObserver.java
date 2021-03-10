@@ -13,4 +13,6 @@ public interface ITwitTimelineModelObserver
   public void notifyTwitDeleted(Twit deletedTwit);
 
   public void notifyTwitsDeleted(Set<Twit> deletedTwits);
+
+  public void notifyClear();
 }
